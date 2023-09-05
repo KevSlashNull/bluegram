@@ -22,9 +22,11 @@ async function doLogin() {
     <div
       class="flex flex-col gap-5 items-center justify-center max-w-[500px] mx-auto"
     >
-      {{ error }}
-
       <h1 class="text-4xl">Bluegram</h1>
+
+      <div v-if="error" class="form-element bg-red-600 px-3 py-1 rounded-lg">
+        {{ error }}
+      </div>
 
       <div class="form-element">
         <label for="identifier">Identifier</label>
