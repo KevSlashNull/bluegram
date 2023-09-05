@@ -53,3 +53,7 @@ async function loadSession(): Promise<void> {
     await agent.resumeSession(session as AtpSessionData).catch(() => {});
   }
 }
+
+export function logout() {
+  localStorage.removeItem(LOCAL_STORAGE_KEY);
+}
