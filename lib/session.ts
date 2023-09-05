@@ -51,6 +51,7 @@ async function loadSession(): Promise<void> {
 
   if (session) {
     await agent.resumeSession(session as AtpSessionData).catch(() => {});
+    storeSession();
   }
 }
 
