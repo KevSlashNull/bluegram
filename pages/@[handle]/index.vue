@@ -22,7 +22,7 @@ const { feed } = await agent
           width="64"
           alt=""
         />
-        <div>
+        <div class="truncate">
           <h2 class="text-lg font-bold truncate">{{ actor.displayName }}</h2>
           <h3 class="text-muted">
             @{{ actor.handle.replace(/.bsky.social$/, "") }}
