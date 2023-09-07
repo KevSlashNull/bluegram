@@ -10,6 +10,13 @@ const { feed } = await agent
     filter: "posts_with_media",
   })
   .then((r) => r.data);
+
+const stats = computed(() =>
+  [
+    [actor.followersCount, "followers"],
+    [actor.followsCount, "follows"],
+  ].filter((item) => (item[0] as any) >= 0)
+);
 </script>
 <template>
   <div>
@@ -18,8 +25,8 @@ const { feed } = await agent
         <img
           class="rounded-full"
           :src="actor.avatar"
-          height="64"
-          width="64"
+          height="80"
+          width="80"
           alt=""
         />
         <div class="truncate">
@@ -27,9 +34,18 @@ const { feed } = await agent
           <h3 class="text-muted">
             @{{ actor.handle.replace(/.bsky.social$/, "") }}
           </h3>
+          <div class="flex text-sm text-muted gap-1">
+            <template v-for="([value, stat], index) in stats" :key="stat">
+              <span
+                >{{ value }}
+                {{ value === 1 ? String(stat).replace(/s$/, "") : stat }}</span
+              >
+              <template v-if="index !== stats.length - 1">&middot;</template>
+            </template>
+          </div>
         </div>
       </div>
-      <div v-if="actor.description" class="px-5 py-1">
+      <div v-if="actor.description" class="px-5 pt-2 pb-1">
         <bsky-rich-text :text="actor.description" />
       </div>
     </div>
