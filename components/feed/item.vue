@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { AppBskyFeedDefs } from "@atproto/api";
+import { ViewImage } from "@atproto/api/dist/client/types/app/bsky/embed/images";
 import { addImage as trackImageDimensions } from "~/lib/image-cache";
 
 const props = defineProps<{
@@ -50,17 +51,21 @@ function handleClick(e: Event) {
   $emit("click");
 }
 
+const images = computed<ViewImage[]>(
+  () => (props.post.embed?.images as any) || []
+);
+
 onMounted(() => {
   trackImageDimensions(
     props.post.cid,
-    (props.post.embed?.images as any).map((r: any) => r.thumb)
+    images.value.map((r: any) => r.thumb)
   );
 });
 </script>
 
 <template>
   <div
-    class="post flex aspect-square overflow-hidden"
+    class="post flex aspect-square relative overflow-hidden"
     :data-id="post.cid"
     :loading="lazy ? 'lazy' : ''"
     @touchstart="startTouch"
@@ -70,17 +75,14 @@ onMounted(() => {
     @contextmenu="(e) => e.preventDefault()"
     @click="handleClick"
   >
-    <img
-      :class="{ 'blur-lg': warn }"
-      :src="(post.embed?.images as any)[0].thumb"
-      alt=""
-    />
+    <icon-image v-if="images.length > 1" class="absolute top-2 right-2" />
+    <img :class="{ 'blur-lg': warn }" :src="images[0].thumb" alt="" />
   </div>
   <feed-preview
     v-if="open"
     :actor="post.author"
     :indexed-at="new Date(post.indexedAt)"
-    :image-url="String((post.embed?.images as any)[0].thumb)"
+    :image-url="images[0].thumb"
     :post-cid="post.cid"
   />
 </template>
