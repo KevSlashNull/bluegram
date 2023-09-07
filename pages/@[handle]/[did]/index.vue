@@ -59,10 +59,10 @@ const likeCount = computed(() => {
       />
     </div>
     <div class="flex px-4 py-4 gap-2">
-      {{ likeCount }}
       <button @click="like">
         <icon-heart :class="{ 'fill-red-600 text-red-600': likeId }" />
       </button>
+      {{ likeCount }}
     </div>
 
     <bsky-rich-text
